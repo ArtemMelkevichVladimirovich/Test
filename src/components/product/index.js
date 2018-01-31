@@ -1,22 +1,73 @@
-import React, {Component} from 'react';
-import {Text, Button, ScrollView, View, Image, TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {setListComments} from "../../actions/comments";
-import {Actions} from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { Text, Button, ScrollView, View, Image, TextInput, TouchableOpacity, AsyncStorage, Slider, ToastAndroid } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setListComments } from "../../actions/comments";
+import { Actions } from 'react-native-router-flux';
 import styles from './styles';
+import Comments from '../comments/index';
 
 
 class Product extends Component {
 
-    showReviews() {
-        Actions.comments();
+    constructor() {
+        super();
+        this.state = {
+            token: '',
+            text: '',
+            rate: 0
+        }
+        this.setToken();
     }
 
-    sendReviews(){
-        AsyncStorage.getItem('Token',(err, result) => {
-            console.log(result);
+    setReviewsServer() {
+        console.log(`==========>>>>>>>>>>> TOKEN _____${this.state.token}`);
+        fetch(`http://smktesting.herokuapp.com//api/reviews/${this.props.one.id}`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${this.state.token}`,
+                },
+                body: JSON.stringify({
+                    rate: `${this.state.rate}`,
+                    text: `${this.state.text}`,
+                }),
+            }
+        )
+            .then((response) => response.json())
+            .then(console.log);
+
+    }
+
+    sendReview() {
+        if (this.state.token !== null) {
+            this.setReviewsServer();
+            ToastAndroid.show('Ok', ToastAndroid.SHORT);
+            return;
+        }
+        ToastAndroid.show('You should sign in first', ToastAndroid.SHORT);
+    }
+
+
+    setRate(value) {
+        this.setState({
+            rate: value,
         })
+    }
+
+    setText(value) {
+        this.setState({
+            text: value,
+        })
+    }
+
+    setToken() {
+        AsyncStorage.getItem('Token', (err, result) => {
+            this.setState({
+                token: `${result}`
+            })
+        });
     }
 
     componentDidMount() {
@@ -27,32 +78,31 @@ class Product extends Component {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={{ backgroundColor: 'red'}}>
+            <ScrollView contentContainerStyle={{ backgroundColor: 'red' }}>
                 <View style={styles.logoProduct}>
                     <Text style={styles.text}>{this.props.one.title}</Text>
                     <Image
-                        source={{uri: `http://smktesting.herokuapp.com/static/${this.props.one.img}`}}
+                        source={{ uri: `http://smktesting.herokuapp.com/static/${this.props.one.img}` }}
                         style={styles.img}
                     />
                     <Text>Dicription</Text>
                     <Text>{this.props.one.text}</Text>
-
-                    <TouchableOpacity
-                        style={{backgroundColor: 'blue'}}
-                        onPress={() => Actions.comments()}
-                    >
-                        <Text>Browsing reviews</Text>
-                    </TouchableOpacity>
                 </View>
 
 
                 <View style={styles.form}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{flex: 1, padding: 10}}> Give Feedback:</Text>
-                        <Button style={{padding: 10}} title='Send' onPress={() => this.sendReviews()}/>
+                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                        <Text style={{ flex: 0.5 }}>Rate: {this.state.rate}</Text>
+                        <Slider onValueChange={(value) => this.setRate(value)} style={{ flex: 1 }} maximumValue={5} minimumValue={0} step={1} />
                     </View>
-                    <TextInput style={{marginLeft: 20, marginRight: 10}} placeholder='Text...'/>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ flex: 1, padding: 10 }}> Give Feedback:</Text>
+                        <Button style={{ padding: 10 }} title='Send' onPress={() => this.sendReview()} />
+                    </View>
+                    <TextInput onChangeText={(text) => this.setText(text)} style={{ marginLeft: 20, marginRight: 10 }} placeholder='Text...' />
+
                 </View>
+                <Comments/>
             </ScrollView>
         );
 
@@ -62,7 +112,7 @@ class Product extends Component {
 
 export default connect(
     state => {
-        return {one: state.one, comments: state.comments}
+        return { one: state.one, comments: state.comments }
     },
-    dispatch => bindActionCreators({setListComments}, dispatch)
+    dispatch => bindActionCreators({ setListComments }, dispatch)
 )(Product);

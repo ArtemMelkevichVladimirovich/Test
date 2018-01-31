@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Text, TouchableOpacity, Image, View, ScrollView} from 'react-native';
+import {Text, TouchableOpacity, Image, View, ScrollView, Button, AsyncStorage} from 'react-native';
 import {setListProduct} from '../../actions/list';
 import {setDetail} from '../../actions/one';
 import {Actions} from 'react-native-router-flux';
@@ -47,6 +47,10 @@ class Application extends Component {
                         );
                     })
                 }
+                <Button title = 'EXIT' onPress={() => {
+                    AsyncStorage.removeItem('Token');
+                    Actions.pop();
+                }}/>
             </ScrollView>
         );
     }

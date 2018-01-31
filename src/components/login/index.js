@@ -31,14 +31,10 @@ export default class Login extends Component {
       .then((data) => {
         if (data.success) {
           ToastAndroid.show('Success', ToastAndroid.LONG);
-          AsyncStorage.setItem('Token', JSON.stringify(data.token));
-          console.log(data);
-          AsyncStorage.getItem('Token', (err, result) => {
-            console.log(result);
-          })
+          AsyncStorage.setItem('Token', data.token);
           Actions.list();
         } else {
-          ToastAndroid.show(`${data.message}`, ToastAndroid.LONG);
+          ToastAndroid.show(`${data.message}`, ToastAndroid.SHORT);
         }
       });
   }
