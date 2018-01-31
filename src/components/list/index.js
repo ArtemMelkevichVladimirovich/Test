@@ -1,10 +1,22 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {Text, TouchableOpacity, Image, View, ScrollView, Button, AsyncStorage} from 'react-native';
-import {setListProduct} from '../../actions/list';
-import {setDetail} from '../../actions/one';
-import {Actions} from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { bindActionCreators } from 'redux';
+import {
+    Text,
+    View,
+    Image,
+    Button,
+    ScrollView,
+    AsyncStorage,
+    TouchableOpacity,
+} from 'react-native';
+
+import styles from './style';
+import { setDetail } from '../../actions/one';
+import { setListProduct } from '../../actions/list';
+import style from './style';
+
 
 
 class Application extends Component {
@@ -23,23 +35,18 @@ class Application extends Component {
     render() {
         let obj = this.props.list;
         return (
-            <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+            <ScrollView contentContainerStyle={styles.container}>
                 {
                     obj.map((item, index) => {
                         return (
-                            <View style={{
-                                margin: 10,
-                                alignItems: 'center',
-                                backgroundColor: 'green',
-                                width: 130,
-                                height: 145
-                            }}
+                            <View
+                                style={styles.icon}
                                 key={index}
                             >
                                 <TouchableOpacity onPress={() => this.showDetailProduct(item)}>
                                     <Image
-                                        source={{uri: `http://smktesting.herokuapp.com/static/${item.img}`}}
-                                        style={{width: 100, height: 100, margin: 10, padding:50}}
+                                        source={{ uri: `http://smktesting.herokuapp.com/static/${item.img}` }}
+                                        style={styles.img}
                                     />
                                     <Text>{item.title}</Text>
                                 </TouchableOpacity>
@@ -47,10 +54,10 @@ class Application extends Component {
                         );
                     })
                 }
-                <Button title = 'EXIT' onPress={() => {
+                <Button title='EXIT' onPress={() => {
                     AsyncStorage.removeItem('Token');
                     Actions.pop();
-                }}/>
+                }} />
             </ScrollView>
         );
     }
@@ -58,7 +65,7 @@ class Application extends Component {
 
 export default connect(
     state => {
-        return {list: state.list};
+        return { list: state.list };
     },
-    dispatch => bindActionCreators({setListProduct, setDetail}, dispatch),
+    dispatch => bindActionCreators({ setListProduct, setDetail }, dispatch),
 )(Application);

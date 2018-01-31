@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ToastAndroid, AsyncStorage } from 'react-native';
-import styles from './style';
 import { Actions } from 'react-native-router-flux';
+import {
+  Text,
+  View,
+  TextInput,
+  ToastAndroid,
+  AsyncStorage,
+  TouchableOpacity,
+} from 'react-native';
+
+import styles from './style';
+
 
 
 export default class Login extends Component {
@@ -15,27 +24,26 @@ export default class Login extends Component {
   }
 
   AuthenticationUser() {
-    fetch('http://smktesting.herokuapp.com/api/login/',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: `${this.state.uaername}`,
-          password: `${this.state.password}`,
-        }),
-      })
+    fetch('http://smktesting.herokuapp.com/api/login/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: `${this.state.uaername}`,
+        password: `${this.state.password}`,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           ToastAndroid.show('Success', ToastAndroid.LONG);
           AsyncStorage.setItem('Token', data.token);
           Actions.list();
-        } else {
-          ToastAndroid.show(`${data.message}`, ToastAndroid.SHORT);
+          return;
         }
+        ToastAndroid.show(`${data.message}`, ToastAndroid.SHORT);
       });
   }
 
@@ -75,11 +83,17 @@ export default class Login extends Component {
             secureTextEntry={true}
             onChangeText={(text) => this.setDataForSignIn(text, 'password')}
           />
-          <TouchableOpacity onPress={() => this.singIn()} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => this.singIn()}
+            style={styles.button}
+          >
             <Text> Sing in</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => Actions.register()} style={{ flex: 0.09 }}>
+        
+        <TouchableOpacity
+          onPress={() => Actions.register()}
+          style={{ flex: 0.09 }}>
           <Text> Did you register?  </Text>
         </TouchableOpacity>
       </View>

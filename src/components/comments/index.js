@@ -1,11 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Text,
     View,
     ScrollView,
-
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+
+import styles from './style';
+
 
 class Comments extends Component {
 
@@ -13,17 +15,12 @@ class Comments extends Component {
         let obj = this.props.comments;
         obj.reverse();
         return (
-            <ScrollView contentContainerStyle={{ backgroundColor: 'red'}}>
+            <ScrollView contentContainerStyle={styles.container}>
                 {
                     obj.map((item, index) => {
                         return (
                             <View
-                                style={{
-                                    height:100,
-                                    marginBottom: 10,
-                                    padding: 20,
-                                    backgroundColor: '#F5F5DC',
-                                }}
+                                style={styles.comment}
                                 key={item.id}
                             >
                                 <Text> User: {item.created_by.username} </Text>
@@ -41,6 +38,6 @@ class Comments extends Component {
 
 export default connect(
     (state) => {
-        return {comments: state.comments}
+        return { comments: state.comments }
     },
 )(Comments);

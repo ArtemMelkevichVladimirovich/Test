@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
-import { TextInput, Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
+import {
+    Text,
+    View,
+    TextInput,
+    ToastAndroid,
+    TouchableOpacity,
+} from 'react-native';
+
 import styles from './style';
+
 
 class Register extends Component {
 
@@ -14,19 +22,18 @@ class Register extends Component {
     }
 
     registerUser() {
-        fetch('http://smktesting.herokuapp.com/api/register/',
-            {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: `${this.state.uaername}`,
-                    password: `${this.state.password}`,
-                }),
-            }
-        ).then((response) => response.json())
+        fetch('http://smktesting.herokuapp.com/api/register/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: `${this.state.uaername}`,
+                password: `${this.state.password}`,
+            }),
+        })
+            .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     ToastAndroid.show('Success', ToastAndroid.LONG);
@@ -63,9 +70,9 @@ class Register extends Component {
         if (this.state.password !== this.state.passwordConfirm) {
             ToastAndroid.show('Passwords do not match', ToastAndroid.LONG);
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     sendUserDataForRegistration() {

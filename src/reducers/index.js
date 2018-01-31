@@ -1,7 +1,7 @@
-import comments from './comments';
-import list from './list';
 import one from './one';
+import list from './list';
+import comments from './comments';
 
-export { comments };
-export { list };
 export { one };
+export { list };
+export { comments };

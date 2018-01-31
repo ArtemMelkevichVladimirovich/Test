@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import { Text, Button, ScrollView, View, Image, TextInput, TouchableOpacity, AsyncStorage, Slider, ToastAndroid } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { setListComments } from "../../actions/comments";
 import { Actions } from 'react-native-router-flux';
+import { bindActionCreators } from 'redux';
+import {
+    Text,
+    View,
+    Image,
+    Slider,
+    Button,
+    TextInput,
+    ScrollView,
+    AsyncStorage,
+    ToastAndroid,
+    TouchableOpacity,
+} from 'react-native';
+
 import styles from './styles';
 import Comments from '../comments/index';
+import { setListComments } from "../../actions/comments";
 
 
 class Product extends Component {
@@ -21,22 +33,18 @@ class Product extends Component {
     }
 
     setReviewsServer() {
-        console.log(`==========>>>>>>>>>>> TOKEN _____${this.state.token}`);
         fetch(`http://smktesting.herokuapp.com//api/reviews/${this.props.one.id}`, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: `Token ${this.state.token}`,
-                },
-                body: JSON.stringify({
-                    rate: `${this.state.rate}`,
-                    text: `${this.state.text}`,
-                }),
-            }
-        )
-            .then((response) => response.json())
-            .then(console.log);
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Token ${this.state.token}`,
+            },
+            body: JSON.stringify({
+                rate: `${this.state.rate}`,
+                text: `${this.state.text}`,
+            }),
+        });
 
     }
 
@@ -100,9 +108,9 @@ class Product extends Component {
                         <Button style={{ padding: 10 }} title='Send' onPress={() => this.sendReview()} />
                     </View>
                     <TextInput onChangeText={(text) => this.setText(text)} style={{ marginLeft: 20, marginRight: 10 }} placeholder='Text...' />
-
                 </View>
-                <Comments/>
+
+                <Comments />
             </ScrollView>
         );
 
