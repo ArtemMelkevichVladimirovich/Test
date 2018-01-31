@@ -11,7 +11,7 @@ class Application extends Component {
 
     showDetailProduct(data) {
         this.props.setDetail(data);
-        Actions.gray();
+        Actions.product();
     }
 
     componentWillMount() {
@@ -34,12 +34,12 @@ class Application extends Component {
                                 width: 130,
                                 height: 145
                             }}
-                                  key={index}
+                                key={index}
                             >
                                 <TouchableOpacity onPress={() => this.showDetailProduct(item)}>
                                     <Image
                                         source={{uri: `http://smktesting.herokuapp.com/static/${item.img}`}}
-                                        style={{width: 100, height: 100, margin: 10}}
+                                        style={{width: 100, height: 100, margin: 10, padding:50}}
                                     />
                                     <Text>{item.title}</Text>
                                 </TouchableOpacity>

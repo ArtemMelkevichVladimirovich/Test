@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, Button, ScrollView, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {Text, Button, ScrollView, View, Image, TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {setListComments} from "../../actions/comments";
@@ -11,6 +11,12 @@ class Product extends Component {
 
     showReviews() {
         Actions.comments();
+    }
+
+    sendReviews(){
+        AsyncStorage.getItem('Token',(err, result) => {
+            console.log(result);
+        })
     }
 
     componentDidMount() {
@@ -43,7 +49,7 @@ class Product extends Component {
                 <View style={styles.form}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{flex: 1, padding: 10}}> Give Feedback:</Text>
-                        <Button style={{padding: 10}} title='Send' onPress={() => console.log("Hello")}/>
+                        <Button style={{padding: 10}} title='Send' onPress={() => this.sendReviews()}/>
                     </View>
                     <TextInput style={{marginLeft: 20, marginRight: 10}} placeholder='Text...'/>
                 </View>

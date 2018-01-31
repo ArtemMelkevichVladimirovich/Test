@@ -11,6 +11,7 @@ class Comments extends Component {
 
     render() {
         let obj = this.props.comments;
+        obj.reverse();
         return (
             <ScrollView contentContainerStyle={{ backgroundColor: 'red'}}>
                 {

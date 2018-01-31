@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,10 +16,11 @@ const styles = StyleSheet.create({
         height: 150,
     },
     img: {
-        width: 150,
-        height:150,
+        nativeEvent: {
+            layout: { x: 5, y: 5, width: 150, height: 150 }
+        },
         marginBottom: 20,
-        marginTop: 15
+        marginTop: 15,
     },
     text: {
         marginTop: 10
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         backgroundColor: '#F5F5DC',
     },
-    logoProduct:{
+    logoProduct: {
         backgroundColor: '#F5F5DC',
         alignItems: 'center',
     }

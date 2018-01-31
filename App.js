@@ -4,14 +4,17 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Router, Scene} from 'react-native-router-flux';
-import {Provider} from 'react-redux';
+import React, { Component } from 'react';
+import { Router, Scene } from 'react-native-router-flux';
+import { Provider } from 'react-redux';
+import { View } from 'react-native';
 
 import store from './src/store';
 import Application from './src/components/list/index';
 import Product from './src/components/product/index';
 import Comments from './src/components/comments/index';
+import Login from './src/components/login/index';
+import Register from './src/components/register/index';
 
 
 store.subscribe(() => {
@@ -26,7 +29,7 @@ store.subscribe(() => {
 
 store.dispatch({
     type: "ADD_LIST",
-    payload: [{id: 1, user: 'artem'}, {id: 2, user: 'vika'}],
+    payload: [{ id: 1, user: 'artem' }, { id: 2, user: 'vika' }],
 });
 
 
@@ -36,27 +39,35 @@ export default class App extends Component {
         return (
             <Provider store={store}>
                 <Router>
-                    <Scene key="root">
+                    <Scene key='root'>
                         <Scene
-                            key="scarlet"
-                            component={Application}
-                            title="List"
+                            key='login'
+                            component={Login}
+                            
+                            hideNavBar
+                        />
+                        <Scene
+                            key='register'
+                            component={Register}
+                        />
+                        <Scene
+                            key='list'
                             initial
+                            component={Application}
+                            hideNavBar
                         />
                         <Scene
-                            key="gray"
+                            key='product'
+                            
                             component={Product}
-                            title="Product"
                         />
                         <Scene
-                            key="comments"
+                            key='comments'
                             component={Comments}
-                            title="Reviews"
                         />
                     </Scene>
                 </Router>
             </Provider>
         );
     }
-}
-
+};
