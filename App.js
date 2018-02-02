@@ -46,26 +46,20 @@ export default class App extends Component {
                         <Scene
                             key='login'
                             component={Login}
-                            hideNavBar
-                        />
+                            hideNavBar />
                         <Scene
                             key='register'
-                            component={Register}
-                        />
+                            component={Register} />
                         <Scene
                             hideNavBar
                             key='list'
-                            component={Application}
-
-                        />
+                            component={Application} />
                         <Scene
                             key='product'
-                            component={Product}
-                        />
+                            component={Product} />
                         <Scene
                             key='comments'
-                            component={Comments}
-                        />
+                            component={Comments} />
                     </Scene>
                 </Router>
             </Provider>

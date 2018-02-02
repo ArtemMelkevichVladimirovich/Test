@@ -6,32 +6,17 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import styles from './style';
+import CommentsPresentational from './view';
 
 
 class Comments extends Component {
 
     render() {
-        let obj = this.props.comments;
-        obj.reverse();
+        let data = this.props.comments;
+        data.reverse();
+
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                {
-                    obj.map((item, index) => {
-                        return (
-                            <View
-                                style={styles.comment}
-                                key={item.id}
-                            >
-                                <Text> User: {item.created_by.username} </Text>
-                                <Text> Date: {item.created_at} </Text>
-                                <Text> Rote: {item.rate} </Text>
-                                <Text> Comment:{item.text} </Text>
-                            </View>
-                        );
-                    })
-                }
-            </ScrollView>
+            <CommentsPresentational data={this.props.comments} />
         );
     }
 }

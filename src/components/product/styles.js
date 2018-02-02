@@ -22,22 +22,54 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     text: {
-        marginTop: 10
+        marginTop: 10,
     },
     containerProduct: {
-        marginBottom: 10,
         padding: 20,
-        backgroundColor: '#F5F5DC',
+        paddingBottom: 10,
+        backgroundColor: '#87CEFA',
     },
     form: {
         padding: 10,
         marginVertical: 20,
-        backgroundColor: '#F5F5DC',
+        backgroundColor: '#87CEFA',
     },
     logoProduct: {
-        backgroundColor: '#F5F5DC',
+        backgroundColor: '#87CEFA',
         alignItems: 'center',
+    },
+    button: {
+        padding: 10,
+    },
+    inputReview: {
+        marginLeft: 20,
+        marginRight: 10,
+    },
+    titleFeedback: {
+        flex: 1,
+        padding: 10,
+    },
+    formFeedback: {
+        flexDirection: 'row',
+    },
+    rate: {
+        flexDirection: 'row',
+        marginBottom: 5,
+    },
+    logoDecr: {
+        borderBottomWidth: 1.5,
+    },
+    logoText: {
+        marginBottom: 10,
+        marginTop: 10,
+    },
+    textRate: {
+        flex: 0.5,
+    },
+    slider: {
+        flex: 1,
     }
+
 });
 
 

@@ -10,20 +10,35 @@ import {
     ScrollView,
     AsyncStorage,
     TouchableOpacity,
+    DrawerLayoutAndroid,
 } from 'react-native';
 
 import styles from './style';
 import { setDetail } from '../../actions/one';
 import { setListProduct } from '../../actions/list';
-import style from './style';
-
 
 
 class Application extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            token: '',
+        }
+        AsyncStorage.getItem('Token', (err, result) => {
+            this.setState({ token: `${result}` })
+        });
+
+    }
+
     showDetailProduct(data) {
         this.props.setDetail(data);
         Actions.product();
+    }
+
+    exitAccount() {
+        Actions.pop();
+        AsyncStorage.removeItem('Token');
     }
 
     componentWillMount() {
@@ -33,32 +48,41 @@ class Application extends Component {
     }
 
     render() {
-        let obj = this.props.list;
+
+        let navigationView = (
+            <TouchableOpacity
+                onPress={() => this.exitAccount()}
+                style={styles.item}>
+                <Text style={styles.text}>
+                    {this.state.token.length > 4 ? 'SIGN OUT' : 'BACK'}
+                </Text>
+            </TouchableOpacity>
+        );
+
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                {
-                    obj.map((item, index) => {
-                        return (
-                            <View
-                                style={styles.icon}
-                                key={index}
-                            >
-                                <TouchableOpacity onPress={() => this.showDetailProduct(item)}>
-                                    <Image
-                                        source={{ uri: `http://smktesting.herokuapp.com/static/${item.img}` }}
-                                        style={styles.img}
-                                    />
-                                    <Text>{item.title}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        );
-                    })
-                }
-                <Button title='EXIT' onPress={() => {
-                    AsyncStorage.removeItem('Token');
-                    Actions.pop();
-                }} />
-            </ScrollView>
+            <DrawerLayoutAndroid
+                drawerWidth={120}
+                drawerPosition={DrawerLayoutAndroid.positions.Left}
+                renderNavigationView={() => navigationView}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    {
+                        this.props.list.map((item, index) => {
+                            return (
+                                <View key={index}>
+                                    <TouchableOpacity
+                                        style={styles.icon}
+                                        onPress={() => this.showDetailProduct(item)}>
+                                        <Image
+                                            source={{ uri: `http://smktesting.herokuapp.com/static/${item.img}` }}
+                                            style={styles.img} />
+                                        <Text>{item.title}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            );
+                        })
+                    }
+                </ScrollView>
+            </DrawerLayoutAndroid>
         );
     }
 }

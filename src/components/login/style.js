@@ -27,6 +27,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    textBrows: {
+        borderWidth: 1,
+        padding: 10,
+    },
+    buttonBrows: {
+        flex: 0.5,
+    },
+    textReg: {
+        flex: 0.1,
+        marginBottom: 10,
     }
 });
 

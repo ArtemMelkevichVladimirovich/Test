@@ -3,14 +3,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     comment: {
-        height: 100,
         marginBottom: 10,
         padding: 20,
-        backgroundColor: '#F5F5DC',
+        justifyContent: 'center',
+        backgroundColor: '#87CEFA',
     },
-    container:{
-        backgroundColor: 'red',
-    }
 });
 
 export default styles;

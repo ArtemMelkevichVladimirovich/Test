@@ -63,7 +63,6 @@ class Register extends Component {
                 });
                 break;
         }
-
     }
 
     verifyPasswordMatching() {
@@ -88,19 +87,18 @@ class Register extends Component {
                     <TextInput
                         style={styles.field}
                         placeholder='New username'
-                        onChangeText={(text) => this.setDataForRegistration(text, 'username')}
-                    />
+                        onChangeText={(text) => this.setDataForRegistration(text, 'username')} />
                     <TextInput
                         style={styles.field} placeholder='Password'
                         secureTextEntry={true}
-                        onChangeText={(text) => this.setDataForRegistration(text, 'password')}
-                    />
+                        onChangeText={(text) => this.setDataForRegistration(text, 'password')} />
                     <TextInput
                         style={styles.field} placeholder='Confirm password'
                         secureTextEntry={true}
-                        onChangeText={(text) => this.setDataForRegistration(text, 'passwordConfirm')}
-                    />
-                    <TouchableOpacity onPress={() => this.sendUserDataForRegistration()} style={styles.button}>
+                        onChangeText={(text) => this.setDataForRegistration(text, 'passwordConfirm')} />
+                    <TouchableOpacity
+                        onPress={() => this.sendUserDataForRegistration()}
+                        style={styles.button}>
                         <Text> Register </Text>
                     </TouchableOpacity>
                 </View>
