@@ -120,8 +120,6 @@ class Product extends Component {
                 <Comments />
             </ScrollView>
         );
-
-
     }
 }
 

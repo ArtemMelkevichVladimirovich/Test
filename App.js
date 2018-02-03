@@ -41,17 +41,6 @@ export default class App extends Component {
         AuthService.init();
     }
 
-    componentDidMount() {
-        let token = AuthService.getToken();
-
-        if (token) {
-            Actions.list();
-            return;
-        }
-        Actions.login();
-
-    }
-
     render() {
         return (
             <Provider store={store}>

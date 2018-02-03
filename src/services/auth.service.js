@@ -34,10 +34,9 @@ class AuthService {
         this.onStart = callback;
     }
 
-    static deleteToken(){
+    static deleteToken() {
         AsyncStorage.removeItem(TOKEN_KEY);
         this.token = null;
-        console.log('TOKEN DELETE : ', this.getToken());
     }
 
 }
