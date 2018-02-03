@@ -6,6 +6,10 @@ import {
     ToastAndroid,
     TouchableOpacity,
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
+import ApiService from './../../services/api.service'
+import AuthService from './../../services/auth.service'
 
 import styles from './style';
 
@@ -22,17 +26,13 @@ class Register extends Component {
     }
 
     registerUser() {
-        fetch('http://smktesting.herokuapp.com/api/register/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: `${this.state.uaername}`,
-                password: `${this.state.password}`,
-            }),
-        })
+
+        let data = {
+            username: `${this.state.username}`,
+            password: `${this.state.password}`,
+        }
+
+        ApiService.post('/register/', data)
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
@@ -77,6 +77,7 @@ class Register extends Component {
     sendUserDataForRegistration() {
         if (this.verifyPasswordMatching()) {
             this.registerUser();
+            Actions.pop();
         }
     }
 

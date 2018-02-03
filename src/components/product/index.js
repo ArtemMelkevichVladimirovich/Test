@@ -17,46 +17,38 @@ import {
 
 import styles from './styles';
 import Comments from '../comments/index';
+import ApiService from '../../services/api.service';
+import AuthService from '../../services/auth.service';
 import { setListComments } from "../../actions/comments";
-
+import Config from '../../config';
 
 class Product extends Component {
 
     constructor() {
         super();
         this.state = {
-            token: '',
+            issetToken: !!AuthService.getToken(),
             text: '',
             rate: 0
         }
         this.setToken();
     }
 
-    setReviewsServer() {
-        fetch(`http://smktesting.herokuapp.com//api/reviews/${this.props.one.id}`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Token ${this.state.token}`,
-            },
-            body: JSON.stringify({
-                rate: `${this.state.rate}`,
-                text: `${this.state.text}`,
-            }),
-        });
-    }
-
     sendReview() {
-        if (this.state.token.length > 4) {
-            this.setReviewsServer();
-            ToastAndroid.show('Published', ToastAndroid.SHORT);
-        } else {
-            ToastAndroid.show('You should sign in first', ToastAndroid.SHORT);
+        let data = {
+            rate: `${this.state.rate}`,
+            text: `${this.state.text}`,
         }
-        fetch(`http://smktesting.herokuapp.com/api/reviews/${this.props.one.id}`)
-            .then((res) => res.json())
-            .then((data) => this.props.setListComments(data));
+
+        console.log('SEND REVIEW!!!!!!!!')
+
+        ApiService.post(`/reviews/${this.props.one.id}`, data)
+            .then((response) => response.json())
+            .then((data) => {
+                ApiService.get(`/reviews/${this.props.one.id}`)
+                    .then((response) => response.json())
+                    .then((data) => this.props.setListComments(data));
+            });
     }
 
 
@@ -81,46 +73,49 @@ class Product extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://smktesting.herokuapp.com/api/reviews/${this.props.one.id}`)
+        ApiService.get(`/reviews/${this.props.one.id}`)
             .then((res) => res.json())
             .then((data) => this.props.setListComments(data));
     }
 
     render() {
+        let reviewInput =
+            <View style={styles.form}>
+                <View style={styles.rate}>
+                    <Text style={styles.textRate}> Rate: {this.state.rate} </Text>
+                    <Slider
+                        onValueChange={(value) => this.setRate(value)}
+                        style={styles.slider}
+                        maximumValue={5}
+                        minimumValue={0}
+                        step={1} />
+                </View>
+                <View style={styles.formFeedback}>
+                    <Text style={styles.titleFeedback}> Give Feedback:</Text>
+                    <Button
+                        style={styles.button}
+                        title='Send'
+                        onPress={() => this.sendReview()} />
+                </View>
+                <TextInput
+                    onChangeText={(text) => this.setText(text)}
+                    style={styles.inputReview}
+                    placeholder='Text...' />
+            </View>;
+
         return (
             <ScrollView>
                 <ScrollView contentContainerStyle={styles.logoProduct}>
                     <Text style={styles.text}> {this.props.one.title} </Text>
                     <Image
-                        source={{ uri: `http://smktesting.herokuapp.com/static/${this.props.one.img}` }}
+                        source={{ uri: `${Config.STATIC_URL}/${this.props.one.img}` }}
                         style={styles.img} />
                     <Text style={styles.logoDecr}>Product Decription</Text>
                     <Text style={styles.logoText}>{this.props.one.text}</Text>
                 </ScrollView>
 
 
-                <View style={styles.form}>
-                    <View style={styles.rate}>
-                        <Text style={styles.textRate}> Rate: {this.state.rate} </Text>
-                        <Slider
-                            onValueChange={(value) => this.setRate(value)}
-                            style={styles.slider}
-                            maximumValue={5}
-                            minimumValue={0}
-                            step={1} />
-                    </View>
-                    <View style={styles.formFeedback}>
-                        <Text style={styles.titleFeedback}> Give Feedback:</Text>
-                        <Button
-                            style={styles.button}
-                            title='Send'
-                            onPress={() => this.sendReview()} />
-                    </View>
-                    <TextInput
-                        onChangeText={(text) => this.setText(text)}
-                        style={styles.inputReview}
-                        placeholder='Text...' />
-                </View>
+                {this.state.issetToken ? reviewInput : undefined}
 
                 <Comments />
             </ScrollView>

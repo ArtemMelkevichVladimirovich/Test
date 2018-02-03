@@ -22,20 +22,34 @@ import Product from './src/components/product/index';
 import Comments from './src/components/comments/index';
 import Register from './src/components/register/index';
 import Application from './src/components/list/index';
-
+import AuthService from './src/services/auth.service';
 
 
 
 export default class App extends Component {
 
+
     componentWillMount() {
-        AsyncStorage.getItem('Token', (err, result) => {
-            if (result) {
+        AuthService.setOnStart(function (token) {
+            if (token) {
                 Actions.list();
                 return;
             }
             Actions.login();
         });
+
+        AuthService.init();
+    }
+
+    componentDidMount() {
+        let token = AuthService.getToken();
+
+        if (token) {
+            Actions.list();
+            return;
+        }
+        Actions.login();
+
     }
 
     render() {
@@ -49,6 +63,7 @@ export default class App extends Component {
                             hideNavBar />
                         <Scene
                             key='register'
+                            hideNavBar
                             component={Register} />
                         <Scene
                             hideNavBar

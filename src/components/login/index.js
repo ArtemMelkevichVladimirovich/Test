@@ -8,6 +8,8 @@ import {
     AsyncStorage,
     TouchableOpacity,
 } from 'react-native';
+import ApiService from './../../services/api.service';
+import AuthService from './../../services/auth.service';
 
 import styles from './style';
 
@@ -24,22 +26,18 @@ export default class Login extends Component {
     }
 
     AuthenticationUser() {
-        fetch('http://smktesting.herokuapp.com/api/login/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: `${this.state.uaername}`,
-                password: `${this.state.password}`,
-            }),
-        })
-            .then((response) => response.json())
+
+        let data = {
+            username: `${this.state.username}`,
+            password: `${this.state.password}`,
+        }
+
+        ApiService.post('/login/', data)
+            .then(response => response.json())
             .then((data) => {
                 if (data.success) {
                     ToastAndroid.show('Success', ToastAndroid.SHORT);
-                    AsyncStorage.setItem('Token', data.token);
+                    AuthService.setToken(data.token);
                     Actions.list();
                     return;
                 }

@@ -14,22 +14,13 @@ import {
 } from 'react-native';
 
 import styles from './style';
+import Config from '../../config';
 import { setDetail } from '../../actions/one';
+import ApiService from '../../services/api.service';
 import { setListProduct } from '../../actions/list';
-
+import AuthService from '../../services/auth.service';
 
 class Application extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            token: '',
-        }
-        AsyncStorage.getItem('Token', (err, result) => {
-            this.setState({ token: `${result}` })
-        });
-
-    }
 
     showDetailProduct(data) {
         this.props.setDetail(data);
@@ -38,11 +29,11 @@ class Application extends Component {
 
     exitAccount() {
         Actions.pop();
-        AsyncStorage.removeItem('Token');
+        AuthService.deleteToken();
     }
 
     componentWillMount() {
-        fetch('http://smktesting.herokuapp.com/api/products/')
+        ApiService.get('/products/')
             .then((respons) => respons.json())
             .then((data) => this.props.setListProduct(data));
     }
@@ -54,7 +45,9 @@ class Application extends Component {
                 onPress={() => this.exitAccount()}
                 style={styles.item}>
                 <Text style={styles.text}>
-                    {this.state.token.length > 4 ? 'SIGN OUT' : 'BACK'}
+                    {   
+                        AuthService.getToken()? 'SIGN OUT' : 'BACK'
+                    }
                 </Text>
             </TouchableOpacity>
         );
@@ -73,7 +66,7 @@ class Application extends Component {
                                         style={styles.icon}
                                         onPress={() => this.showDetailProduct(item)}>
                                         <Image
-                                            source={{ uri: `http://smktesting.herokuapp.com/static/${item.img}` }}
+                                            source={{ uri: `${Config.STATIC_URL}/${item.img}` }}
                                             style={styles.img} />
                                         <Text>{item.title}</Text>
                                     </TouchableOpacity>

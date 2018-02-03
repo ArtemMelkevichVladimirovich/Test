@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import CommentsPresentational from './view';
+import styles from './style';
 
 
 class Comments extends Component {
@@ -16,7 +16,22 @@ class Comments extends Component {
         data.reverse();
 
         return (
-            <CommentsPresentational data={this.props.comments} />
+            <ScrollView>
+                {
+                    data.map((item, index) => {
+                        return (
+                            <ScrollView
+                                contentContainerStyle={styles.comment}
+                                key={item.id}>
+                                <Text> User: {item.created_by.username} </Text>
+                                <Text> Date: {item.created_at} </Text>
+                                <Text> Rote: {item.rate} </Text>
+                                <Text> Comment: {item.text} </Text>
+                            </ScrollView>
+                        );
+                    })
+                }
+            </ScrollView>
         );
     }
 }
